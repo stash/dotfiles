@@ -1,12 +1,24 @@
+set nocompatible
+syntax enable
+filetype plugin indent on
+
+set showcmd                       " Display incomplete commands.
+set showmode                      " Display the mode you're in.
+set backspace=indent,eol,start    " Intuitive backspacing.
+set hidden                        " Handle multiple buffers better.
+set wildmenu                      " Enhanced command line completion.
+set wildmode=list:longest         " Complete files like a shell.
+set incsearch                     " Highlight matches as you type.
+set hlsearch                      " Highlight matches.
+set wrap                          " Turn on line wrapping.
+
+" nice indenting
 set autoindent
 set smartindent
 
-" expand tabs to two spaces
-set tabstop=2
-set shiftwidth=2
+set tabstop=8
+set shiftwidth=4
 set expandtab
-
-" backspace key deletes two spaces
 set smarttab
 
 map <F4> :w<CR>:make<CR>:cw<CR>
