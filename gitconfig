@@ -1,0 +1,17 @@
+[user]
+	name = Jeremy Stashewsky
+	email = jstash@gmail.com
+[github]
+	user = stash
+[color]
+  auto = 1
+  ui = auto
+  sh = auto
+[alias]
+  co = checkout
+  ci = commit
+  st = status
+  lm = ls-files --exclude-standard -m
+  ls = ls-files --exclude-standard
+[format]
+  pretty = oneline
