@@ -1,8 +1,8 @@
 [user]
-	name = Jeremy Stashewsky
-	email = jstash@gmail.com
+  name = Jeremy Stashewsky
+  email = jstash@gmail.com
 [github]
-	user = stash
+  user = stash
 [color]
   auto = 1
   ui = auto
@@ -15,3 +15,5 @@
   ls = ls-files --exclude-standard
 [format]
   pretty = oneline
+[merge]
+  ff = false
