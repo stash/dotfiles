@@ -1,5 +1,6 @@
 set nocompatible
-syntax enable
+call pathogen#infect()
+syntax on
 filetype plugin indent on
 
 set showcmd                       " Display incomplete commands.
