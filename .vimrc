@@ -12,10 +12,31 @@ set wildmode=list:longest         " Complete files like a shell.
 set incsearch                     " Highlight matches as you type.
 set hlsearch                      " Highlight matches.
 set wrap                          " Turn on line wrapping.
+set splitright                    " cursor goes right on vsplit
+set exrc
+
+set ignorecase  " default to case-insensitive searches
+set smartcase   " go case-sensitive when MixedCase searching
 
 " nice indenting
 set autoindent
 set smartindent
+
+set pastetoggle=<F12>
+
+set termencoding=utf-8
+set encoding=utf-8
+set fileencoding=utf-8
+set laststatus=2 " always
+set statusline=%y%{GetFileEncoding()}%t%m%r%=0x%B\ %c:%l/%L
+function! GetFileEncoding()
+    let str = &fileformat . ']'
+    if has('multi_byte') && &fileencoding != ''
+        let str = &fileencoding . ':' . str
+    endif
+    let str = '[' . str
+    return str
+endfunction
 
 set tabstop=8
 set shiftwidth=4
