@@ -56,5 +56,6 @@ elif [ -f /etc/bash_completion ] && ! shopt -oq posix; then
 fi
 
 . .bash_git_prompt
+. .bash_git_cmd
 PROMPT_COMMAND=_git_prompt_color
 

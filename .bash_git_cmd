@@ -1,0 +1,34 @@
+#!bash
+
+gunpushed() {
+    local branch remote merge rbranch
+    branch=`git symbolic-ref -q HEAD`
+    if [ -n "$branch" ]; then 
+        branch="${branch##refs/heads/}"
+        remote=`git config branch.${branch}.remote`
+        merge=`git config branch.${branch}.merge`
+        if [ -n "$remote" -a -n "$merge" ]; then
+            merge="${merge##refs/heads/}"
+            rbranch="$remote/$merge"
+            echo "UNPUSHED: git log $rbranch..$branch"
+            git log $rbranch..$branch
+            echo "UNPULLED: git log $branch..$rbranch"
+            git log $branch..$rbranch
+        fi
+    fi
+}
+
+gpu() {
+    local branch remote merge
+    branch=`git symbolic-ref -q HEAD`
+    if [ -n "$branch" ]; then 
+        branch="${branch##refs/heads/}"
+        remote=`git config branch.${branch}.remote`
+        merge=`git config branch.${branch}.merge`
+        if [ -n "$remote" -a -n "$merge" ]; then
+            merge="${merge##refs/heads/}"
+            echo "git push $remote $merge"
+            git push $remote $merge
+        fi
+    fi
+}
