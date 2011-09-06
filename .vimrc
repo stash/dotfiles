@@ -46,6 +46,9 @@ set shiftwidth=4
 set expandtab
 set smarttab
 
+set grepprg=ack
+
+map <F3> :grep <C-R><C-W><CR><CR>
 map <F4> :w<CR>:make<CR>:cw<CR>
-map <F3> :w<CR>:!./node_modules/.bin/vows\ %<CR>
+map <F5> :w<CR>:!./node_modules/.bin/vows\ %<CR>
 
