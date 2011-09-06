@@ -1,6 +1,8 @@
 set nocompatible
 call pathogen#infect()
 syntax on
+syntax sync fromstart
+
 filetype plugin indent on
 
 set showcmd                       " Display incomplete commands.
@@ -13,6 +15,7 @@ set incsearch                     " Highlight matches as you type.
 set hlsearch                      " Highlight matches.
 set wrap                          " Turn on line wrapping.
 set splitright                    " cursor goes right on vsplit
+set autowrite autoread            " automatically write/read when suspending, etc.
 set exrc
 
 set ignorecase  " default to case-insensitive searches
