@@ -1,7 +1,7 @@
 
 Howto
 
-1. Clone the repo, run `git submodule update`
+1. Clone the repo with `--recursive` (or run `git submodule update --init --recursive` after cloning)
 
 2. copy `gitconfig` to `~/.gitconfig`, add your github key
 
