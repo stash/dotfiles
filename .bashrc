@@ -60,3 +60,6 @@ fi
 . .bash_git_cmd
 PROMPT_COMMAND=_git_prompt_color
 
+if [ `uname` == "Darwin" ]; then
+    export PATH=/usr/local/bin:$PATH
+fi
