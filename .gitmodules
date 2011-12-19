@@ -22,3 +22,6 @@
 [submodule ".vim/bundle/stash-vim-javascript"]
 	path = .vim/bundle/stash-vim-javascript
 	url = git@github.com:stash/vim-javascript.git
+[submodule ".vim/bundle/vim-ruby"]
+	path = .vim/bundle/vim-ruby
+	url = git://github.com/vim-ruby/vim-ruby.git
