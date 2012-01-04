@@ -1,5 +1,11 @@
-set nocompatible
 call pathogen#infect()
+call pathogen#helptags()
+
+let g:syntastic_check_on_open=1
+let g:syntastic_enable_baloons=0
+let g:syntastic_enable_signs=1
+let g:syntastic_auto_loc_list=1 " open automatically when errors, closed when none; default 2
+
 syntax on
 syntax sync fromstart
 
@@ -50,5 +56,4 @@ set grepprg=ack
 
 map <F3> :grep <C-R><C-W><CR><CR>
 map <F4> :w<CR>:make<CR>:cw<CR>
-map <F5> :w<CR>:!./node_modules/.bin/vows\ %<CR>
-
+map <F5> :SyntasticToggleMode<CR>:redraw!<CR>
