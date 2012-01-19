@@ -63,3 +63,18 @@ PROMPT_COMMAND=_git_prompt_color
 if [ `uname` == "Darwin" ]; then
     export PATH=/usr/local/bin:$PATH
 fi
+
+if [ `uname` == "SunOS" ]; then
+    alias man='GROFF_NO_SGR= TCAT="less -s" TROFF="groff -Tascii" man -t'
+    if [ -d /opt/local/share/lib/terminfo ]; then
+        export TERMINFO=/opt/local/share/lib/terminfo
+    fi
+fi
+
+if [ -d $HOME/slashjoin/node/bin ]; then
+    export PATH=$HOME/slashjoin/node/bin:$HOME/slashjoin/node_modules/.bin:$PATH
+fi
+
+if [ `uname -n` == 'snv_121' ]; then
+    export PATH=/opt/local/gcc44/bin:$PATH
+fi
