@@ -1,15 +1,15 @@
 #!bash
 
 gunpushed() {
-    local branch remote merge rbranch
+    local branch remote tracking rbranch
     branch=`git symbolic-ref -q HEAD`
     if [ -n "$branch" ]; then 
         branch="${branch##refs/heads/}"
         remote=`git config branch.${branch}.remote`
-        merge=`git config branch.${branch}.merge`
-        if [ -n "$remote" -a -n "$merge" ]; then
-            merge="${merge##refs/heads/}"
-            rbranch="$remote/$merge"
+        tracking=`git config branch.${branch}.merge`
+        if [ -n "$remote" -a -n "$tracking" ]; then
+            tracking="${tracking##refs/heads/}"
+            rbranch="$remote/$tracking"
             echo "UNPUSHED: git log $rbranch..$branch"
             git log $rbranch..$branch
             echo "UNPULLED: git log $branch..$rbranch"
@@ -19,16 +19,55 @@ gunpushed() {
 }
 
 gpu() {
-    local branch remote merge
+    local branch remote tracking
     branch=`git symbolic-ref -q HEAD`
     if [ -n "$branch" ]; then 
         branch="${branch##refs/heads/}"
         remote=`git config branch.${branch}.remote`
-        merge=`git config branch.${branch}.merge`
-        if [ -n "$remote" -a -n "$merge" ]; then
-            merge="${merge##refs/heads/}"
-            echo "git push $remote $merge"
-            git push $remote $merge
+        tracking=`git config branch.${branch}.merge`
+        if [ -n "$remote" -a -n "$tracking" ]; then
+            tracking="${tracking##refs/heads/}"
+            echo "git push $remote $tracking"
+            git push $remote $tracking
         fi
     fi
+}
+
+gmerge() {
+  local toMerge force branch remote n m rbranch tracking
+  toMerge=$1
+  force=$2
+  echo "gmerge: fetching..."
+  git fetch || return
+  
+  echo "gmerge: checking if current branch is up to date (use 'gmerge branch force' to skip)..."
+  branch=`git symbolic-ref -q HEAD`
+  if [ -z "$branch" ]; then
+    echo "gmerge: not currently on a branch"
+    return 1
+  fi
+
+  branch="${branch##refs/heads/}"
+  remote=`git config branch.${branch}.remote`
+  tracking=`git config branch.${branch}.merge`
+  if [ -n "$remote" -a -n "$merge" ]; then
+    tracking="${tracking##refs/heads/}"
+    rbranch="$remote/$tracking"
+    n=`git log --pretty=oneline $rbranch..$branch | wc -l`
+    m=`git log --pretty=oneline $branch..$rbranch | wc -l`
+    if [ "$n" -gt 0 -o "$m" -gt 0 ]; then
+      echo "gmerge: ERROR local branch '$branch' is out of sync with remote tracking branch '$rbranch'"
+      if [ -n "$force" ]; then
+        echo "gmerge: ... ignoring (force option present)"
+      else
+        gunpushed
+        return 1
+      fi
+    fi
+  else
+    echo "gmerge: can't identify remote tracking branch for local branch '$branch'"
+  fi
+
+  echo "gmerge: merging origin/$toMerge ('git merge --abort' to cancel)"
+  git merge --no-ff origin/$toMerge
 }
