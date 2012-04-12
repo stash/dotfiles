@@ -1,0 +1,95 @@
+#!/usr/bin/env perl
+
+my $against = 'HEAD';
+my $found_bad = 0;
+my $filename;
+my $reported_filename = "";
+my $lineno;
+
+# TODO: respect `git config color` somehow
+my $RED = "\033[31m";
+my $GREEN = "\033[32m";
+my $YELLOW = "\033[33m";
+my $RESET = "\033[39m";
+
+if (system("git rev-parse --verify HEAD >/dev/null 2>&1") != 0) {
+    # Initial commit: diff against an empty tree object
+    $against="4b825dc642cb6eb9a060e54bf8d69288fbee4904"
+}
+
+sub bad_line {
+    my ($why, $line, $just_warn) = @_;
+
+    if (!$found_bad) {
+        print STDERR "$YELLOW⚠ $RESET\n";
+        print STDERR "$YELLOW⚠  You have some suspicious patch lines (use -n to force):$RESET\n";
+        print STDERR "$YELLOW⚠ $RESET\n";
+        $found_bad = 1;
+    }
+
+    if ($reported_filename ne $filename) {
+        print STDERR "$YELLOW➡  In $filename$RESET\n";
+        $reported_filename = $filename;
+    }
+
+    print STDERR "$RED✘ $why (line $lineno)$RESET\n";
+    print STDERR "$filename:$lineno:$line\n";
+}
+
+my @lines = `git diff-index -p -M -C --cached $against --`;
+while ($_ = shift @lines) {
+    if (m{^diff --git a/(.*) b/\1$}) {
+        $filename = $1;
+        next;
+    }
+    if (/^@@ -\S+ \+(\d+)/) {
+        $lineno = $1 - 1;
+        next;
+    }
+    if (/^ /) {
+        $lineno++;
+        next;
+    }
+    if (s/^\+ //) {
+        $lineno++;
+        chomp;
+        if (/^\s* \t/) {
+            bad_line("indent SP followed by a TAB", $_);
+        }
+        if (/^([<>])\1{6} |^={7}$/) {
+            bad_line("unresolved merge conflict", $_);
+        }
+
+        if (/^\s+warn\b/) {
+            bad_line(qq{Indented "warn" is suspicious}, $_);
+        }
+        if (/^\s+use XXX/) {
+            bad_line(qq{Indented "use XXX" is suspicious}, $_);
+        }
+        if (/(?:WWW|XXX|YYY|ZZZ)\(/) {
+            bad_line(qq{"use XXX"-style warning is suspicious}, $_);
+        }
+
+        if (/^\s+use Data::Dump(?:er)?/) {
+            bad_line(qq{Indented "use Data::Dump$1" is suspicious}, $_);
+        }
+        if (/(?:print|warn).* Dumper/) {
+            bad_line(qq{"use Data::Dumper"-style warning is suspicious}, $_);
+        }
+
+        if (/console\.([a-zA-Z_]+)\(/) {
+            bad_line(qq{"console.$1()" is not allowed}, $_);
+        }
+        if (/alert\(/) {
+            bad_line(qq{"alert()" is not allowed}, $_);
+        }
+        if (/debugger(?:;|$)/) {
+            bad_line(qq{"debugger;" statement is bad}, $_);
+        }
+    }
+}
+
+if (!$found_bad) {
+    print "$GREEN✔ patch is clean!$RESET\n";
+}
+exit($found_bad);

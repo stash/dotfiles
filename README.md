@@ -7,3 +7,5 @@ Howto
 
 3. link other dotfiles to `~`
 
+4. link `.git/hooks` to `githooks`
+
