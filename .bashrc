@@ -26,18 +26,28 @@ if which lesspipe > /dev/null; then
     eval "$(SHELL=/bin/sh lesspipe)"
 fi
 
-# enable color support of ls and also add handy aliases
+# Enable color support of ls
 if [ `uname` == 'Darwin' ]; then
     export CLICOLOR=1
-else
-    if which dircolors > /dev/null; then
-        test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-        alias ls='ls --color=auto'
-        alias grep='grep --color=auto'
-        alias fgrep='fgrep --color=auto'
-        alias egrep='egrep --color=auto'
+    if [ -x /usr/local/bin/gls ]; then
+        # brew install coreutils to get gls
+        alias ls='/usr/local/bin/gls --color=auto'
     fi
+else
+    alias ls='ls --color=auto'
 fi
+
+# read in .dircolors or just use the default
+if which gdircolors >/dev/null; then
+    test -r ~/.dircolors && eval "$(gdircolors -b ~/.dircolors)" || eval "$(gdircolors -b)"
+elif which dircolors >/dev/null; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+fi
+
+# colorful grep too (but I use `ack` ususally)
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like

@@ -9,3 +9,7 @@ Howto
 
 4. link `.git/hooks` to `githooks`
 
+
+Hints
+
+* install homebrew and `brew install coreutils` to get colorful ls output
