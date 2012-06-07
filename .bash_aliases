@@ -36,3 +36,4 @@ alias profile='source ~/.bashrc'
 alias sup='git stash && gup && git stash pop'
 alias suppy='git stash && gup && gpu && git stash pop'
 
+alias tmux='tmux -2 -u' # 256-color and utf8
