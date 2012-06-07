@@ -11,6 +11,7 @@ syntax sync fromstart
 
 filetype plugin indent on
 
+set mouse=a                       " pass in mouse events
 set showcmd                       " Display incomplete commands.
 set showmode                      " Display the mode you're in.
 set backspace=indent,eol,start    " Intuitive backspacing.
@@ -57,3 +58,4 @@ set grepprg=ack
 map <F3> :grep <C-R><C-W><CR><CR>
 map <F4> :w<CR>:make<CR>:cw<CR>
 map <F5> :SyntasticToggleMode<CR>:redraw!<CR>
+
