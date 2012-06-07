@@ -15,3 +15,5 @@
   ls = ls-files --exclude-standard
 [format]
   pretty = oneline
+[merge]
+  conflictstyle = diff3
