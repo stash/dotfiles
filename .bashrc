@@ -76,7 +76,6 @@ if [ `uname` == "Darwin" ]; then
 fi
 
 if [ `uname` == "SunOS" ]; then
-    alias man='GROFF_NO_SGR= TCAT="less -s" TROFF="groff -Tascii" man -t'
     if [ -d /opt/local/share/lib/terminfo ]; then
         export TERMINFO=/opt/local/share/lib/terminfo
     fi
@@ -87,5 +86,10 @@ if [ -d $HOME/slashjoin/node/bin ]; then
 fi
 
 if [ `uname -n` == 'snv_121' ]; then
+    alias man='GROFF_NO_SGR= TCAT="less -s" TROFF="groff -Tascii" man -t'
     export PATH=/opt/local/gcc44/bin:$PATH
+fi
+
+if [ `uname` == "SunOS" ]; then
+  export PATH=$PATH:/usr/local/bin
 fi
