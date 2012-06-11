@@ -1,3 +1,4 @@
+
 call pathogen#infect()
 call pathogen#helptags()
 
@@ -6,12 +7,25 @@ let g:syntastic_enable_baloons=0
 let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=1 " open automatically when errors, closed when none; default 2
 
-syntax on
-syntax sync fromstart
+if &t_Co > 2 || has('gui_running') " color terminal
+  syntax on
+  syntax sync fromstart
+  set hlsearch " Highlight matches.
+else
+  syntax off
+endif
+
+if &t_Co > 88 || has('gui_running')
+  set background=dark
+  colorscheme stash
+endif
 
 filetype plugin indent on
 
-set mouse=a                       " pass in mouse events
+if has('mouse')
+  set mouse=a " pass in mouse events if term supports it
+endif
+
 set showcmd                       " Display incomplete commands.
 set showmode                      " Display the mode you're in.
 set backspace=indent,eol,start    " Intuitive backspacing.
@@ -19,7 +33,6 @@ set hidden                        " Handle multiple buffers better.
 set wildmenu                      " Enhanced command line completion.
 set wildmode=list:longest         " Complete files like a shell.
 set incsearch                     " Highlight matches as you type.
-set hlsearch                      " Highlight matches.
 set wrap                          " Turn on line wrapping.
 set splitright                    " cursor goes right on vsplit
 set autowrite autoread            " automatically write/read when suspending, etc.
