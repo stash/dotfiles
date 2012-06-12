@@ -19,7 +19,7 @@ hi ErrorMsg cterm=none ctermfg=231 ctermbg=196
 hi FoldColumn cterm=none ctermfg=18 ctermbg=250
 hi Folded cterm=none ctermfg=18 ctermbg=252
 hi LineNr cterm=none ctermfg=124 ctermbg=235
-hi MatchParen cterm=none ctermfg=none ctermbg=51
+hi MatchParen cterm=none ctermfg=none ctermbg=201
 hi ModeMsg cterm=bold ctermfg=none ctermbg=none
 hi MoreMsg cterm=bold ctermfg=29 ctermbg=none
 hi NonText cterm=bold ctermfg=21 ctermbg=none
