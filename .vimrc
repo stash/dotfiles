@@ -6,6 +6,7 @@ let g:syntastic_check_on_open=1
 let g:syntastic_enable_baloons=0
 let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=1 " open automatically when errors, closed when none; default 2
+let g:syntastic_loc_list_height=3
 
 if &t_Co > 2 || has('gui_running') " color terminal
   syntax on
