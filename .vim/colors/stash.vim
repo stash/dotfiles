@@ -48,8 +48,8 @@ hi WildMenu cterm=none ctermfg=16 ctermbg=226
 
 hi lCursor cterm=reverse ctermfg=none ctermbg=none
 
-hi Search cterm=none ctermfg=94 ctermbg=none
-hi IncSearch cterm=none ctermfg=94 ctermbg=none
+hi Search cterm=none ctermfg=15 ctermbg=18
+hi IncSearch cterm=none ctermfg=15 ctermbg=18
 
 hi Constant cterm=none ctermfg=244 ctermbg=none
 hi Comment cterm=none ctermfg=24 ctermbg=none
