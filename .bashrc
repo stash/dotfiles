@@ -25,7 +25,7 @@ HISTIGNORE="&:[bf]g:jobs:exit"
 shopt -s checkwinsize
 
 # make less more friendly for non-text input files, see lesspipe(1)
-if which lesspipe > /dev/null; then
+if which lesspipe >/dev/null 2>&1; then
     eval "$(SHELL=/bin/sh lesspipe)"
 fi
 
@@ -41,9 +41,9 @@ else
 fi
 
 # read in .dircolors or just use the default
-if which gdircolors >/dev/null; then
+if which gdircolors >/dev/null 2>&1; then
     test -r ~/.dircolors && eval "$(gdircolors -b ~/.dircolors)" || eval "$(gdircolors -b)"
-elif which dircolors >/dev/null; then
+elif which dircolors >/dev/null 2>&1; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
 fi
 
