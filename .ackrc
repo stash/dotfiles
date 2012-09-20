@@ -1,0 +1,5 @@
+--sort-files
+--smart-case
+--follow
+--ignore-dir=node_modules
+--ignore-dir=node
