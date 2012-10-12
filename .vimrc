@@ -1,5 +1,4 @@
-
-call pathogen#infect()
+call pathogen#infect() " load bundles
 call pathogen#helptags()
 
 let g:syntastic_check_on_open=1
@@ -41,6 +40,9 @@ set exrc
 
 set ignorecase  " default to case-insensitive searches
 set smartcase   " go case-sensitive when MixedCase searching
+
+" shows linenumbers relative to your cursor position
+" set relativenumber
 
 " nice indenting
 set autoindent
