@@ -3,3 +3,5 @@
 --follow
 --ignore-dir=node_modules
 --ignore-dir=node
+--ignore-dir=cover_html
+--ignore-dir=coverage
