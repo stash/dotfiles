@@ -29,6 +29,10 @@ gpu() {
       tracking="${tracking##refs/heads/}"
       echo "git push $remote $tracking"
       git push $remote $tracking
+    else
+      echo "** creating new remote branch $branch **"
+      echo "git push -u origin $branch"
+      git push -u origin $branch
     fi
   fi
 }
