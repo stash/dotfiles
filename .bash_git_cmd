@@ -1,36 +1,36 @@
 #!bash
 
 gunpushed() {
-    local branch remote tracking rbranch
-    branch=`git symbolic-ref -q HEAD`
-    if [ -n "$branch" ]; then 
-        branch="${branch##refs/heads/}"
-        remote=`git config branch.${branch}.remote`
-        tracking=`git config branch.${branch}.merge`
-        if [ -n "$remote" -a -n "$tracking" ]; then
-            tracking="${tracking##refs/heads/}"
-            rbranch="$remote/$tracking"
-            echo "UNPUSHED: git log $rbranch..$branch"
-            git log $rbranch..$branch
-            echo "UNPULLED: git log $branch..$rbranch"
-            git log $branch..$rbranch
-        fi
+  local branch remote tracking rbranch
+  branch=`git symbolic-ref -q HEAD`
+  if [ -n "$branch" ]; then 
+    branch="${branch##refs/heads/}"
+    remote=`git config branch.${branch}.remote`
+    tracking=`git config branch.${branch}.merge`
+    if [ -n "$remote" -a -n "$tracking" ]; then
+      tracking="${tracking##refs/heads/}"
+      rbranch="$remote/$tracking"
+      echo "UNPUSHED: git log $rbranch..$branch"
+      git log $rbranch..$branch
+      echo "UNPULLED: git log $branch..$rbranch"
+      git log $branch..$rbranch
     fi
+  fi
 }
 
 gpu() {
-    local branch remote tracking
-    branch=`git symbolic-ref -q HEAD`
-    if [ -n "$branch" ]; then 
-        branch="${branch##refs/heads/}"
-        remote=`git config branch.${branch}.remote`
-        tracking=`git config branch.${branch}.merge`
-        if [ -n "$remote" -a -n "$tracking" ]; then
-            tracking="${tracking##refs/heads/}"
-            echo "git push $remote $tracking"
-            git push $remote $tracking
-        fi
+  local branch remote tracking
+  branch=`git symbolic-ref -q HEAD`
+  if [ -n "$branch" ]; then 
+    branch="${branch##refs/heads/}"
+    remote=`git config branch.${branch}.remote`
+    tracking=`git config branch.${branch}.merge`
+    if [ -n "$remote" -a -n "$tracking" ]; then
+      tracking="${tracking##refs/heads/}"
+      echo "git push $remote $tracking"
+      git push $remote $tracking
     fi
+  fi
 }
 
 gmerge() {
