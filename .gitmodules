@@ -28,3 +28,6 @@
 [submodule ".vim/bundle/syntastic"]
 	path = .vim/bundle/syntastic
 	url = git://github.com/scrooloose/syntastic.git
+[submodule ".vim/bundle/vim-plugin-minibufexpl"]
+	path = .vim/bundle/vim-plugin-minibufexpl
+	url = git://github.com/techlivezheng/vim-plugin-minibufexpl.git
