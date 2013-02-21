@@ -71,6 +71,7 @@ set smarttab
 
 set grepprg=ack
 
+" thanks @bendecoste for most of this:
 let g:syntastic_javascript_jshint_conf = ".jshintrc.node"
 function! ToggleJSHint()
   if !exists('b:syntastic_javascript_jshint_conf')
@@ -88,5 +89,4 @@ map <F3> :grep <C-R><C-W><CR><CR>
 map <F4> :w<CR>:make<CR>:cw<CR>
 map <F5> :SyntasticToggleMode<CR>:redraw!<CR>
 map <F6> :%s/ \+$//g<CR>
-
 map <F7> :call ToggleJSHint()<CR>:SyntasticCheck<CR>
