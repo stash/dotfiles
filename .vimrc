@@ -71,7 +71,22 @@ set smarttab
 
 set grepprg=ack
 
+let g:syntastic_javascript_jshint_conf = ".jshintrc.node"
+function! ToggleJSHint()
+  if !exists('b:syntastic_javascript_jshint_conf')
+    let b:syntastic_javascript_jshint_conf = g:syntastic_javascript_jshint_conf
+  endif
+
+  if b:syntastic_javascript_jshint_conf == ".jshintrc.node"
+    let b:syntastic_javascript_jshint_conf = ".jshintrc.browser"
+  else
+    let b:syntastic_javascript_jshint_conf = ".jshintrc.node"
+  endif
+endfunc
+
 map <F3> :grep <C-R><C-W><CR><CR>
 map <F4> :w<CR>:make<CR>:cw<CR>
 map <F5> :SyntasticToggleMode<CR>:redraw!<CR>
 map <F6> :%s/ \+$//g<CR>
+
+map <F7> :call ToggleJSHint()<CR>:SyntasticCheck<CR>
