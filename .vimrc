@@ -71,6 +71,16 @@ set smarttab
 
 set grepprg=ack
 
+" https://github.com/goinstant/slashjoin/wiki/vim-strip-whitespace
+fun! <SID>StripTrailingWhitespaces()
+    let l = line(".")
+    let c = col(".")
+    %s/\s\+$//e
+    call cursor(l, c)
+endfun
+
+autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
+
 " thanks @bendecoste for most of this:
 let g:syntastic_javascript_jshint_conf = ".jshintrc.node"
 function! ToggleJSHint()
