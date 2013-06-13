@@ -31,3 +31,9 @@
 [submodule ".vim/bundle/vim-plugin-minibufexpl"]
 	path = .vim/bundle/vim-plugin-minibufexpl
 	url = git://github.com/techlivezheng/vim-plugin-minibufexpl.git
+[submodule ".vim/bundle/delimitMate"]
+	path = .vim/bundle/delimitMate
+	url = git://github.com/Raimondi/delimitMate.git
+[submodule ".vim/bundle/vim-markdown"]
+	path = .vim/bundle/vim-markdown
+	url = git://github.com/tpope/vim-markdown.git
