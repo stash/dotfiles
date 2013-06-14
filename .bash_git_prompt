@@ -1,9 +1,9 @@
 # From stconfig's .gitrc_st
 
 COLOR_RESET="\[\033[0;39;49m\]"
-COLOR_BRANCH="\[\033[0;1;32;44m\]"
-COLOR_REPO="\[\033[0;1;33;44m\]"
-COLOR_WORKDIR="\[\033[0;1;33;42m\]"
+COLOR_BRANCH="\[\033[0;32;44m\]"
+COLOR_REPO="\[\033[0;33;44m\]"
+COLOR_WORKDIR="\[\033[0;33;42m\]"
 MOD_GLYPH="*"
 STATE_GLYPH="|"
 PS1_GLYPH="\$"
