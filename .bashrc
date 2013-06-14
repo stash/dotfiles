@@ -96,3 +96,8 @@ fi
 if [ `uname` == "SunOS" ]; then
   export PATH=$PATH:/usr/local/bin
 fi
+
+if [ -e ~/.nvm/nvm.sh ]; then
+  . ~/.nvm/nvm.sh
+  nvm use default > /dev/null
+fi
