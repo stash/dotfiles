@@ -84,33 +84,12 @@ endfun
 
 autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 
-" thanks @bendecoste for most of this:
-
-" use global .jshint by default
-let g:syntastic_javascript_jshint_conf = "~/.jshintrc"
-
-function! ToggleJSHint()
-  if !exists('b:syntastic_javascript_jshint_conf')
-    let b:syntastic_javascript_jshint_conf = g:syntastic_javascript_jshint_conf
-  endif
-
-  " cycles shared -> browser -> node -> shared ...
-  if b:syntastic_javascript_jshint_conf == ".jshintrc.shared"
-    let b:syntastic_javascript_jshint_conf = ".jshintrc.browser"
-  elseif b:syntastic_javascript_jshint_conf == ".jshintrc.browser"
-    let b:syntastic_javascript_jshint_conf = ".jshintrc.node"
-  elseif b:syntastic_javascript_jshint_conf == ".jshintrc.node"
-    let b:syntastic_javascript_jshint_conf = ".jshintrc.jasmine"
-  else
-    " toggling starts here by default
-    let b:syntastic_javascript_jshint_conf = ".jshintrc.shared"
-  endif
-  :SyntasticCheck
-  echo "jshint is now using" b:syntastic_javascript_jshint_conf
-endfunc
-
 map <F3> :grep <C-R><C-W><CR><CR>
 map <F4> :w<CR>:make<CR>:cw<CR>
 map <F5> :SyntasticToggleMode<CR>:redraw!<CR>
 map <F6> :%s/ \+$//g<CR>
 map <F7> :call ToggleJSHint()<CR>
+
+let g:syntastic_c_config_file = "./syntastic-c.conf"
+let g:syntastic_cpp_config_file = "./syntastic-cpp.conf"
+
