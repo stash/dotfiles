@@ -38,3 +38,7 @@ alias sup='git stash && gup && git stash pop'
 alias suppy='git stash && gup && gpu && git stash pop'
 
 alias tmux='tmux -2 -u' # 256-color and utf8
+
+for i in `seq 1 9`; do
+  alias "sshT$i"="TERM=xterm-256color ssh -t -A bastion.aws.goinstant.org ssh -t -A deploy-1.aws.goinstant.org ssh test-$i.aws.goinstant.org"
+done

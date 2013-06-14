@@ -3,7 +3,7 @@
 gunpushed() {
   local branch remote tracking rbranch
   branch=`git symbolic-ref -q HEAD`
-  if [ -n "$branch" ]; then 
+  if [ -n "$branch" ]; then
     branch="${branch##refs/heads/}"
     remote=`git config branch.${branch}.remote`
     tracking=`git config branch.${branch}.merge`
@@ -21,7 +21,7 @@ gunpushed() {
 gpu() {
   local branch remote tracking
   branch=`git symbolic-ref -q HEAD`
-  if [ -n "$branch" ]; then 
+  if [ -n "$branch" ]; then
     branch="${branch##refs/heads/}"
     remote=`git config branch.${branch}.remote`
     tracking=`git config branch.${branch}.merge`
@@ -43,7 +43,7 @@ gmerge() {
   force=$2
   echo "gmerge: fetching..."
   git fetch || return
-  
+
   echo "gmerge: checking if current branch is up to date (use 'gmerge branch force' to skip)..."
   branch=`git symbolic-ref -q HEAD`
   if [ -z "$branch" ]; then
