@@ -5,3 +5,4 @@
 --ignore-dir=node
 --ignore-dir=cover_html
 --ignore-dir=coverage
+--ignore-dir=.coverage_data
