@@ -117,12 +117,12 @@ gcopr () {
 
 grb () {
   local ontoBranch="$1"
+  local red=`git config --get-color "" "red bold"`
+  local green=`git config --get-color "" "green bold"`
+  local yellow=`git config --get-color "" "yellow bold"`
+  local rs=`git config --get-color "" reset`
   [ -z "$ontoBranch" ] && ontoBranch="master"
 
-  echo "grb: fetching..."
-  git fetch -q || return 1
-
-  echo "grb: checking if current branch is up to date (use 'gmerge branch force' to skip)..."
   branch=`git symbolic-ref -q HEAD`
   if [ -z "$branch" ]; then
     echo "grb: not currently on a branch"
@@ -132,31 +132,37 @@ grb () {
     return 1
   fi
 
-  origHead=`git rev-parse HEAD`
+  echo "grb: fetching..."
+  git fetch -q || return 1
 
+  echo "grb: checking if current branch is up to date..."
+  origHead=`git rev-parse HEAD`
   branch="${branch##refs/heads/}"
   remote=`git config branch.${branch}.remote`
   tracking=`git config branch.${branch}.merge`
   if [ -n "$remote" -a -n "$tracking" ]; then
     tracking="${tracking##refs/heads/}"
     rbranch="$remote/$tracking"
+    echo "grb: remote branch is $rbranch"
     n=`git log --pretty=oneline $rbranch..$branch | wc -l`
     m=`git log --pretty=oneline $branch..$rbranch | wc -l`
     if [ "$n" -gt 0 -o "$m" -gt 0 ]; then
-      echo "grb: ERROR local branch '$branch' is out of sync with remote tracking branch '$rbranch'"
-      echo "grb: ERROR ... push local changes first or cherry-pick them later"
+      echo "grb: ${red}ERROR${rs} local branch '$branch' is out of sync with remote tracking branch '$rbranch'"
+      echo "grb: ${red}ERROR${rs} ... push local changes first or cherry-pick them later"
       gunpushed
       return 1
+    else
+      echo "grb: ${green}Up-to-date${rs}! (HEAD = $origHead)"
     fi
   else
     echo "grb: can't identify remote tracking branch for local branch '$branch'"
+    return 1
   fi
 
   echo "grb: rebasing..."
   echo ""
   if git rebase origin/$ontoBranch; then
     echo ""
-    echo "grb: OK!"
   else
     echo ""
     echo "grb: Failed to rebase."
@@ -165,13 +171,20 @@ grb () {
     return 1
   fi
 
-  echo "grb: original head was $origHead"
-  echo "grb: pushing with 'git push --force origin $branch'..."
-  if git push --force origin "$branch"; then
-    echo "grb: done!"
+  newHead=`git rev-parse HEAD`
+  if [ "$newHead" == "$origHead" ]; then
+    echo "grb: ${yellow}NOOP${rs} rebase resulted in original HEAD"
     return 0
   else
-    echo "grb: failed!"
+    echo "grb: ${green}Rebased${rs}!"
+  fi
+
+  echo "grb: pushing with 'git push --force origin $branch'..."
+  if git push --force origin "$branch"; then
+    echo "grb: ${green}OK${rs} done!"
+    return 0
+  else
+    echo "grb: ${red}ERROR${rs} failed!"
     return 1
   fi
 }
