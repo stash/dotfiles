@@ -107,3 +107,10 @@ gho () {
   git remote add "origin" "$repo"
   git fetch -a "$origin"
 }
+
+gcopr () {
+  local number="$1"
+  git checkout master
+  git fetch origin pull/$number/head:pr-$number
+  git checkout pr-$number
+}
