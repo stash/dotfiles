@@ -75,7 +75,8 @@ fi
 PROMPT_COMMAND=_git_prompt_color
 
 if [ `uname` == "Darwin" ]; then
-    export PATH=/usr/local/bin:$PATH
+    export PATH=/usr/local/sbin:/usr/local/bin:$PATH
+    ulimit -n 1024
 fi
 
 if [ `uname` == "SunOS" ]; then
@@ -84,20 +85,16 @@ if [ `uname` == "SunOS" ]; then
     fi
 fi
 
-if [ -d $HOME/slashjoin/node/bin ]; then
-    export PATH=$HOME/slashjoin/node/bin:$HOME/slashjoin/node_modules/.bin:$PATH
-fi
-
 if [ `uname -n` == 'snv_121' ]; then
     alias man='GROFF_NO_SGR= TCAT="less -s" TROFF="groff -Tascii" man -t'
     export PATH=/opt/local/gcc44/bin:$PATH
 fi
 
 if [ `uname` == "SunOS" ]; then
-  export PATH=$PATH:/usr/local/bin
+    export PATH=$PATH:/usr/local/bin
 fi
 
 if [ -e ~/.nvm/nvm.sh ]; then
-  . ~/.nvm/nvm.sh
-  nvm use default > /dev/null
+    . ~/.nvm/nvm.sh
+    nvm use default > /dev/null
 fi
