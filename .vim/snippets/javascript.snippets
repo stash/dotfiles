@@ -2,46 +2,40 @@ snippet meth
 	${1:class}.prototype.${2:method} = function(${3}) {
 		${4}
 	};
-
 snippet fun
 	function ${1:name}(${2:arg}) {
 		${3}
 	}
-
 snippet fcb
 	function ${1:name}(${2:,}cb) {
 		${3}
 	}
-
 snippet fne
 	function(${1:,}next) {
 		${2}
 	}
-
 snippet f
 	function(${1}) {${2}};
-
 snippet if
 	if (${1:true}) {
 		${2}
 	}
-
+	$3
 snippet ife
 	if (${1:true}) {
 		${2}
 	} else {
 		${3}
 	}
-
+	$4
 snippet errcb
 	if (${1:err}) {
-		return ${2:cb}(${1});
+		return ${2:cb}($1);
 	}
-
+	$3
 # t for tertiary
 snippet t
 	${1:true} ? ${2:a} : ${3:b};
-
 snippet switch
 	switch(${1:expression}) {
 	case '${3:case}':
@@ -56,46 +50,36 @@ snippet case
 		${2:// code}
 		break;
 	${3}
-
 snippet for
 	for (var ${2:i} = 0; $2 < ${1:things}.length; $2++) {
 		${3:$1[$2]}
-	};
-
+	}
 # for with len
 snippet forl
 	for (var ${1:i} = 0, ${2:len} = ${3:things}; $1 < $2; $1++) {
 		${4:$3[$1]}
-	};
-
+	}
 # reverse for
 snippet forr
 	for (var ${2:i} = ${1:things}.length - 1; $2 >= 0; $2) {
 		${3:$1[$2]}
-	};
-
-
+	}
 snippet while
 	while (${1:true}) {
 		${2}
 	}
-
 snippet do
 	do {
 		${2}
 	} while (${1:true});
-
 # Object literal Method
 snippet :f
 	${1:method_name}: function(${2:attribute}) {
 		${4}
 	}${3:,}
-
 snippet timeout
 	setTimeout(function() {${3}}${2}, ${1:10});
-
 snippet tick
 	process.nextTick({$1});
-
 snippet inspect
 	require('util').inspect(${1},{color:${2:true}, depth:${3:null}, hidden:${4:false})
