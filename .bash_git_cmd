@@ -114,3 +114,64 @@ gcopr () {
   git fetch origin pull/$number/head:pr-$number
   git checkout pr-$number
 }
+
+grb () {
+  local ontoBranch="$1"
+  [ -z "$ontoBranch" ] && ontoBranch="master"
+
+  echo "grb: fetching..."
+  git fetch -q || return 1
+
+  echo "grb: checking if current branch is up to date (use 'gmerge branch force' to skip)..."
+  branch=`git symbolic-ref -q HEAD`
+  if [ -z "$branch" ]; then
+    echo "grb: not currently on a branch"
+    return 1
+  elif [ "$branch" == "master" ]; then
+    echo "grb: refusing to rebase master"
+    return 1
+  fi
+
+  origHead=`git rev-parse HEAD`
+
+  branch="${branch##refs/heads/}"
+  remote=`git config branch.${branch}.remote`
+  tracking=`git config branch.${branch}.merge`
+  if [ -n "$remote" -a -n "$merge" ]; then
+    tracking="${tracking##refs/heads/}"
+    rbranch="$remote/$tracking"
+    n=`git log --pretty=oneline $rbranch..$branch | wc -l`
+    m=`git log --pretty=oneline $branch..$rbranch | wc -l`
+    if [ "$n" -gt 0 -o "$m" -gt 0 ]; then
+      echo "grb: ERROR local branch '$branch' is out of sync with remote tracking branch '$rbranch'"
+      echo "grb: ERROR ... push local changes first or cherry-pick them later"
+      gunpushed
+      return 1
+    fi
+  else
+    echo "grb: can't identify remote tracking branch for local branch '$branch'"
+  fi
+
+  echo "grb: rebasing..."
+  echo ""
+  if git rebase origin/$ontoBranch; then
+    echo ""
+    echo "grb: OK!"
+  else
+    echo ""
+    echo "grb: Failed to rebase."
+    echo "grb: Do 'git rebase --abort' to get back to original state or"
+    echo "grb: just do what it takes to fix things up!"
+    return 1
+  fi
+
+  echo "grb: original head was $origHead"
+  echo "grb: pushing with 'git push --force origin $branch'..."
+  if git push --force origin "$branch"; then
+    echo "grb: done!"
+    return 0
+  else
+    echo "grb: failed!"
+    return 1
+  fi
+}
