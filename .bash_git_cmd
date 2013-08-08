@@ -73,7 +73,7 @@ gmerge() {
   fi
 
   echo "gmerge: merging origin/$toMerge ('git merge --abort' to cancel)"
-  git merge --no-ff origin/$toMerge
+  git merge -s recursive -X patience --no-ff origin/$toMerge
 }
 
 # lited from @izs (https://gist.github.com/2897608)
