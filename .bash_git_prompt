@@ -15,7 +15,7 @@ _git_prompt_color() {
 
     g="$(git rev-parse --git-dir 2>/dev/null)"
     if [ -z $g ]; then
-        export BASH_GIT_BRANCH=""
+        export BRANCH=""
         PS1="\u@\h:\w$PS1_GLYPH "
         return
     fi
@@ -59,7 +59,7 @@ _git_prompt_color() {
     fi
 
     b="${b##refs/heads/}" # make it a pretty name
-    export BASH_GIT_BRANCH="$b"
+    export BRANCH="$b"
 
     mod=`git ls-files --modified --deleted --others --exclude-standard 2>/dev/null | head -1`
     if [ ! -z "$mod" ]; then
