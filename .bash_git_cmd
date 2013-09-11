@@ -19,7 +19,8 @@ gunpushed() {
 }
 
 gpu() {
-  local branch remote tracking
+  local branch remote tracking force
+  force="$1"
   branch=`git symbolic-ref -q HEAD`
   if [ -n "$branch" ]; then
     branch="${branch##refs/heads/}"
@@ -27,11 +28,16 @@ gpu() {
     tracking=`git config branch.${branch}.merge`
     if [ -n "$remote" -a -n "$tracking" ]; then
       tracking="${tracking##refs/heads/}"
-      echo "git push $remote $tracking"
-      git push $remote $tracking
+      if [ "$force" == "force" ]; then
+        echo "gpu: git push --force $remote $tracking"
+        git push --force $remote $tracking
+      else
+        echo "gpu: git push $remote $tracking"
+        git push $remote $tracking
+      fi
     else
-      echo "** creating new remote branch $branch **"
-      echo "git push -u origin $branch"
+      echo "gpu: ** creating new remote branch $branch **"
+      echo "gpu: git push -u origin $branch"
       git push -u origin $branch
     fi
   fi
