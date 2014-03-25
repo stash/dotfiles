@@ -11,22 +11,22 @@ let g:syntastic_loc_list_height=3
 nnoremap Q <nop>
 
 if &t_Co > 2 || has('gui_running') " color terminal
-  syntax on
-  syntax sync fromstart
-  set hlsearch " Highlight matches.
+    syntax on
+    syntax sync fromstart
+    set hlsearch " Highlight matches.
 else
-  syntax off
+    syntax off
 endif
 
 if &t_Co > 88 || has('gui_running')
-  set background=dark
-  colorscheme stash
+    set background=dark
+    colorscheme stash
 endif
 
 filetype plugin indent on
 
 if has('mouse')
-  set mouse=a " pass in mouse events if term supports it
+    set mouse=a " pass in mouse events if term supports it
 endif
 
 set showcmd                       " Display incomplete commands.
@@ -92,6 +92,8 @@ map <F7> :call ToggleJSHint()<CR>
 
 let g:syntastic_c_config_file = "./syntastic-c.conf"
 let g:syntastic_cpp_config_file = "./syntastic-cpp.conf"
+let g:syntastic_java_checkstyle_classpath = "~/.m2/repository/com/puppycrawl/tools/checkstyle/5.6/checkstyle-5.6.jar"
+let g:syntastic_java_checkstyle_conf_file = "./checkstyle.xml"
 
 " don't use the default snippets
 let g:snippets_dir = "~/.vim/snippets"
@@ -113,3 +115,9 @@ function! s:RunShellCommand(cmdline)
     set filetype=javascript
     1
 endfunction
+
+let g:indent_guides_auto_colors = 0
+" autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=236
+" autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=234
+" let g:indent_guides_start_level = 2
+" let g:indent_guides_guide_size = 1 " width of the guide

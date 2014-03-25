@@ -43,3 +43,9 @@
 [submodule ".vim/bundle/vim-jst"]
 	path = .vim/bundle/vim-jst
 	url = git@github.com:briancollins/vim-jst.git
+[submodule ".vim/bundle/YouCompleteMe"]
+	path = .vim/bundle/YouCompleteMe
+	url = git@github.com:Valloric/YouCompleteMe.git
+[submodule ".vim/bundle/vim-indent-guides"]
+	path = .vim/bundle/vim-indent-guides
+	url = git@github.com:nathanaelkane/vim-indent-guides.git

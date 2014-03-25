@@ -70,9 +70,19 @@ elif [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
-. .bash_git_prompt
+if [ `uname` == "Darwin" ]; then
+  # homebrew bash completion
+  if [ -f `brew --prefix`/etc/bash_completion ]; then
+    . `brew --prefix`/etc/bash_completion
+  fi
+fi
+
+# after homebrew so the custom prompt applies
+if [ "$USER" != "vagrant" ]; then
+  . .bash_git_prompt
+  PROMPT_COMMAND=_git_prompt_color
+fi
 . .bash_git_cmd
-PROMPT_COMMAND=_git_prompt_color
 
 if [ `uname` == "Darwin" ]; then
     export PATH=/usr/local/sbin:/usr/local/bin:$PATH
@@ -94,9 +104,15 @@ if [ `uname` == "SunOS" ]; then
     export PATH=$PATH:/usr/local/bin
 fi
 
+# Node Version Manager
 if [ -e ~/.nvm/nvm.sh ]; then
     . ~/.nvm/nvm.sh
     nvm use default > /dev/null
+fi
+
+# Go Version Manager
+if [ -e ~/.gvm/scripts/gvm ]; then
+  . ~/.gvm/scripts/gvm
 fi
 
 if [ -e ~/.bashrc.local ]; then

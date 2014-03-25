@@ -79,3 +79,5 @@ hi cType cterm=none ctermfg=156 ctermbg=none
 
 hi vimHiAttrib cterm=none ctermfg=Cyan ctermbg=none
 
+hi IndentGuidesOdd ctermbg=236
+hi IndentGuidesEven ctermbg=234
