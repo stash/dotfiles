@@ -8,3 +8,6 @@
 --ignore-dir=.coverage_data
 --ignore-dir=lib-cov
 --ignore-dir=test-rabbit-*
+--ignore-dir=.attic
+--type-add=isml:ext:isml
+--type-add=dscript:ext:ds

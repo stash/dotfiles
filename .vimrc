@@ -2,10 +2,20 @@ call pathogen#infect() " load bundles
 call pathogen#helptags()
 
 let g:syntastic_check_on_open=1
+let g:syntastic_check_on_wq=0
 let g:syntastic_enable_baloons=0
-let g:syntastic_enable_signs=1
+let g:syntastic_always_populate_loc_list=1
 let g:syntastic_auto_loc_list=1 " open automatically when errors, closed when none; default 2
+let g:syntastic_enable_signs=1
 let g:syntastic_loc_list_height=3
+
+let g:syntastic_filetype_map = {
+    \ "javascript.jsx": "javascript",
+    \ }
+let g:syntastic_javascript_checkers = ["eslint"]
+let g:syntastic_java_checkstyle_classpath = "~/.m2/repository/com/puppycrawl/tools/checkstyle/5.6/checkstyle-5.6.jar"
+let g:syntastic_java_checkstyle_conf_file = "./checkstyle.xml"
+let g:syntastic_cpp_check_header = 1
 
 " disable ex mode
 nnoremap Q <nop>
@@ -51,13 +61,11 @@ set smartcase   " go case-sensitive when MixedCase searching
 set autoindent
 set smartindent
 
-set pastetoggle=<F12>
-
 set termencoding=utf-8
 set encoding=utf-8
 set fileencoding=utf-8
 set laststatus=2 " always
-set statusline=%y%{GetFileEncoding()}%t%m%r%=0x%B\ %c:%l/%L
+
 function! GetFileEncoding()
     let str = &fileformat . ']'
     if has('multi_byte') && &fileencoding != ''
@@ -66,6 +74,25 @@ function! GetFileEncoding()
     let str = '[' . str
     return str
 endfunction
+
+set statusline=%y " filetype
+set statusline+=%{GetFileEncoding()} " see above
+set statusline+=%t " filename (just the file part)
+set statusline+=%m " modified flag
+set statusline+=%r " readonly flag
+set statusline+=\  " one space
+set statusline+=%LL
+
+set statusline+=%= " switch to right side
+set statusline+=>
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%* " reset syntax
+set statusline+=<
+set statusline+=\  " one space
+set statusline+={0x%B} " hex of character under cursor
+set statusline+=\  " one space
+set statusline+=%l:%c
 
 set tabstop=8
 set shiftwidth=4
@@ -88,12 +115,8 @@ map <F3> :grep <C-R><C-W><CR><CR>
 map <F4> :w<CR>:make<CR>:cw<CR>
 map <F5> :SyntasticToggleMode<CR>:redraw!<CR>
 map <F6> :%s/ \+$//g<CR>
-map <F7> :call ToggleJSHint()<CR>
-
-let g:syntastic_c_config_file = "./syntastic-c.conf"
-let g:syntastic_cpp_config_file = "./syntastic-cpp.conf"
-let g:syntastic_java_checkstyle_classpath = "~/.m2/repository/com/puppycrawl/tools/checkstyle/5.6/checkstyle-5.6.jar"
-let g:syntastic_java_checkstyle_conf_file = "./checkstyle.xml"
+" map <F7> :call ToggleJSHint()<CR>
+set pastetoggle=<F12>
 
 " don't use the default snippets
 let g:snippets_dir = "~/.vim/snippets"
@@ -121,3 +144,7 @@ let g:indent_guides_auto_colors = 0
 " autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=234
 " let g:indent_guides_start_level = 2
 " let g:indent_guides_guide_size = 1 " width of the guide
+
+set directory=~/.vimtmp//,~/tmp//,/tmp/vim-$USER//
+
+set updatetime=200 " ms, for things like gitgutter

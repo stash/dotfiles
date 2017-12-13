@@ -1,2 +1,24 @@
+# vim temp
 .*.sw[nmop]
+*~
 .vim/.netrwhist
+
+# Various indexes
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Compiled
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# node_modules
+node_modules/

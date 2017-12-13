@@ -13,9 +13,8 @@ alias gciam='git commit -v -a -m'
 alias gcim='git commit -v -m'
 alias gco='git checkout'
 alias gcp='git cherry-pick -x'
-alias gd='git diff'
-alias gdall='st-git-all diff'
-alias gdc='git diff --cached'
+alias gd='git diff --word-diff=color'
+alias gdc='gd --cached'
 alias gdcp='gdc | vim-pager'
 alias gdp='gd | vim-pager'
 alias gl='git log'
@@ -42,3 +41,5 @@ alias tmux='tmux -2 -u' # 256-color and utf8
 for i in `seq 1 9`; do
   alias "sshT$i"="TERM=xterm-256color ssh -t -A bastion.aws.goinstant.org ssh -t -A deploy-1.aws.goinstant.org ssh test-$i.aws.goinstant.org"
 done
+
+alias vi=vim
