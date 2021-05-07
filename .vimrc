@@ -1,12 +1,16 @@
 let mapleader=","
-nnoremap Q <nop> " disable ex mode
+" map semi-colon for colon (replaces repeating last f or t movement)
+nmap ; :
+" disable ex mode:
+nnoremap Q <nop>
 
 syntax on
 syntax sync fromstart
 set hlsearch " Highlight matches.
 set background=dark
-colorscheme evening
+colorscheme stash
 if has('gui_running')
+	colorscheme evening
 	set guifont=Inconsolata-Regular:h14
 	imap <C-BS> <C-W>
 endif
@@ -74,16 +78,26 @@ set smartindent
 
 set grepprg=rg
 
-map <F2> :nohlsearch
 map <F3> :grep <C-R><C-W><CR><CR>
-map <F4> :w<CR>:make<CR>:cw<CR>
+map <F4> :nohlsearch
 map <F5> :SyntasticToggleMode<CR>:redraw!<CR>
 map <F6> :%s/ \+$//g<CR>
 set pastetoggle=<F12>
 
+" Temp files: Don't use "." specifically; ends up with these getting checked
+" into git all the damn time. Set up some private tempdirs
 set directory=~/.vimtmp//
+" On macos:
 if strlen($TMPDIR) > 0
 	set directory+=$TMPDIR//
 endif
+" On windows:
+if strlen($LOCALAPPDATA) > 0
+	set directory+=$LOCALAPPDATA\\Temp
+endif
+set directory+=~/tmp//
+" Turn off writing a file backup entirely
+set nobackup
+set nowritebackup
 
 set updatetime=200 " ms, for things like gitgutter
