@@ -47,18 +47,13 @@ elif which dircolors >/dev/null 2>&1; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
 fi
 
-# colorful grep too (but I use `ack` ususally)
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
-
 # Alias definitions.
 # You may want to put all your additions into a separate file like
 # ~/.bash_aliases, instead of adding them here directly.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+if [ -f .sh_aliases ]; then
+    . .sh_aliases
 fi
 
 # enable programmable completion features (you don't need to enable
@@ -82,7 +77,10 @@ if [ "$USER" != "vagrant" ]; then
   . .bash_git_prompt
   PROMPT_COMMAND=_git_prompt_color
 fi
-. .bash_git_cmd
+
+if [ -f .sh_git_cmd ]; then
+    . .sh_git_cmd
+fi
 
 if [ `uname` == "Darwin" ]; then
     export PATH=/usr/local/sbin:/usr/local/bin:$PATH
