@@ -1,196 +1,64 @@
-#!bash
-
-gunpushed() {
-  local branch remote tracking rbranch
-  branch=`git symbolic-ref -q HEAD`
-  if [ -n "$branch" ]; then
-    branch="${branch##refs/heads/}"
-    remote=`git config branch.${branch}.remote`
-    tracking=`git config branch.${branch}.merge`
-    if [ -n "$remote" -a -n "$tracking" ]; then
-      tracking="${tracking##refs/heads/}"
-      rbranch="$remote/$tracking"
-      echo "UNPUSHED: git log $rbranch..$branch"
-      git log $rbranch..$branch
-      echo "UNPULLED: git log $branch..$rbranch"
-      git log $branch..$rbranch
-    fi
-  fi
+_git_default_remote () {
+  defaultRemote="$(git remote | head -1)"
 }
 
-gpu() {
-  local branch remote tracking force
-  force="$1"
-  branch=`git symbolic-ref -q HEAD`
-  if [ -n "$branch" ]; then
-    branch="${branch##refs/heads/}"
-    remote=`git config branch.${branch}.remote`
-    tracking=`git config branch.${branch}.merge`
-    if [ -n "$remote" -a -n "$tracking" ]; then
-      tracking="${tracking##refs/heads/}"
-      if [ "$force" == "force" ]; then
-        echo "gpu: git push --force $remote $tracking"
-        git push --force $remote $tracking
-      else
-        echo "gpu: git push $remote $tracking"
-        git push $remote $tracking
-      fi
-    else
-      echo "gpu: ** creating new remote branch $branch **"
-      echo "gpu: git push -u origin $branch"
-      git push -u origin $branch
-    fi
-  fi
+_git_default_branch () {
+  [ -z "$defaultRemote" ] && _git_default_remote
+  defaultBranch=`git rev-parse --abbrev-ref $defaultRemote/HEAD)`
 }
 
-gmerge() {
-  local toMerge force branch remote n m rbranch tracking
-  toMerge=$1
-  force=$2
-  echo "gmerge: fetching..."
-  git fetch || return
-
-  echo "gmerge: checking if current branch is up to date (use 'gmerge branch force' to skip)..."
+_git_setup_branch_info () {
   branch=`git symbolic-ref -q HEAD`
   if [ -z "$branch" ]; then
-    echo "gmerge: not currently on a branch"
-    return 1
+	  echo "Detached HEAD - cannot resolve current branch name" >&2
+	  return 1
   fi
-
   branch="${branch##refs/heads/}"
   remote=`git config branch.${branch}.remote`
   tracking=`git config branch.${branch}.merge`
+}
+
+gunpushed () {
+  local branch remote tracking rbranch
+  _git_setup_branch_info
   if [ -n "$remote" -a -n "$tracking" ]; then
-    tracking="${tracking##refs/heads/}"
-    rbranch="$remote/$tracking"
-    n=`git log --pretty=oneline $rbranch..$branch | wc -l`
-    m=`git log --pretty=oneline $branch..$rbranch | wc -l`
-    if [ "$n" -gt 0 -o "$m" -gt 0 ]; then
-      echo "gmerge: ERROR local branch '$branch' is out of sync with remote tracking branch '$rbranch'"
-      if [ -n "$force" ]; then
-        echo "gmerge: ... ignoring (force option present)"
-      else
-        gunpushed
-        return 1
-      fi
-    fi
-  else
-    echo "gmerge: can't identify remote tracking branch for local branch '$branch'"
+	tracking="${tracking##refs/heads/}"
+	rbranch="$remote/$tracking"
+	echo "UNPUSHED: git log $rbranch..$branch"
+	git log $rbranch..$branch
+	echo "UNPULLED: git log $branch..$rbranch"
+	git log $branch..$rbranch
   fi
-
-  echo "gmerge: merging origin/$toMerge ('git merge --abort' to cancel)"
-  git merge -s recursive -X patience --no-ff origin/$toMerge
 }
 
-# lited from @izs (https://gist.github.com/2897608)
-
-# adds a remote for $nick as a remote of the current repo
-ghadd () {
-  local me="$(git config --get github.user)"
-  [ "$me" == "" ] && echo "Please enter your github name as the github.user git config." && return 1
-  # like: "git@github.com:$me/$repo.git"
-  local mine="$( git config --get remote.origin.url )"
-  local repo="${mine/git@github.com:$me\//}"
-  local nick="$1"
-  local who="$2"
-  [ "$who" == "" ] && who="$nick"
-  [ "$who" == "" ] && ( echo "usage: ghadd [nick] <who>" >&2 ) && return 1
-  # eg: git://github.com/isaacs/jack.git
-  local theirs="git://github.com/$who/$repo"
-  git remote add "$nick" "$theirs"
-  git fetch -a "$nick"
-}
-
-# Add the github origin remote
-gho () {
-  local me="$(git config --get github.user)"
-  [ "$me" == "" ] && \
-    echo "Please enter your github name as the github.user git config." && \
-    return 1
-  # like: "git@github.com:$me/$repo.git"
-  local name="${1:-$(basename "$PWD")}"
-  local repo="git@github.com:$me/$name"
-  git remote add "origin" "$repo"
-  git fetch -a "$origin"
+gpu () {
+  local branch remote tracking force defaultRemote
+  force="$1"
+  _git_setup_branch_info
+  if [ -n "$remote" -a -n "$tracking" ]; then
+	tracking="${tracking##refs/heads/}"
+	if [ "$force" == "force" ]; then
+	  echo "gpu: git push --force $remote $tracking"
+	  git push --force $remote $tracking
+	else
+	  echo "gpu: git push $remote $tracking"
+	  git push $remote $tracking
+	fi
+  else
+	_git_default_remote
+	echo "gpu: ** creating new remote branch $branch **"
+	echo "gpu: git push -u $defaultRemote $branch"
+	git push -u $defaultRemote $branch
+  fi
 }
 
 gcopr () {
+  local defaultRemote defaultBranch
+  _git_default_remote
+  _git_default_branch
   local number="$1"
-  git checkout master
-  git fetch origin pull/$number/head:pr-$number
+  git checkout "$defaultBranch"
+  git fetch "$defaultRemote" pull/$number/head:pr-$number
   git checkout pr-$number
 }
 
-grb () {
-  local ontoBranch="$1"
-  local red=`git config --get-color "" "red bold"`
-  local green=`git config --get-color "" "green bold"`
-  local yellow=`git config --get-color "" "yellow bold"`
-  local rs=`git config --get-color "" reset`
-  [ -z "$ontoBranch" ] && ontoBranch="master"
-
-  branch=`git symbolic-ref -q HEAD`
-  if [ -z "$branch" ]; then
-    echo "grb: not currently on a branch"
-    return 1
-  elif [ "$branch" == "master" ]; then
-    echo "grb: refusing to rebase master"
-    return 1
-  fi
-
-  echo "grb: fetching..."
-  git fetch -q || return 1
-
-  echo "grb: checking if current branch is up to date..."
-  origHead=`git rev-parse HEAD`
-  branch="${branch##refs/heads/}"
-  remote=`git config branch.${branch}.remote`
-  tracking=`git config branch.${branch}.merge`
-  if [ -n "$remote" -a -n "$tracking" ]; then
-    tracking="${tracking##refs/heads/}"
-    rbranch="$remote/$tracking"
-    echo "grb: remote branch is $rbranch"
-    n=`git log --pretty=oneline $rbranch..$branch | wc -l`
-    m=`git log --pretty=oneline $branch..$rbranch | wc -l`
-    if [ "$n" -gt 0 -o "$m" -gt 0 ]; then
-      echo "grb: ${red}ERROR${rs} local branch '$branch' is out of sync with remote tracking branch '$rbranch'"
-      echo "grb: ${red}ERROR${rs} ... push local changes first or cherry-pick them later"
-      gunpushed
-      return 1
-    else
-      echo "grb: ${green}Up-to-date${rs}! (HEAD = $origHead)"
-    fi
-  else
-    echo "grb: can't identify remote tracking branch for local branch '$branch'"
-    return 1
-  fi
-
-  echo "grb: rebasing..."
-  echo ""
-  if git rebase origin/$ontoBranch; then
-    echo ""
-  else
-    echo ""
-    echo "grb: Failed to rebase."
-    echo "grb: Do 'git rebase --abort' to get back to original state or"
-    echo "grb: just do what it takes to fix things up!"
-    return 1
-  fi
-
-  newHead=`git rev-parse HEAD`
-  if [ "$newHead" == "$origHead" ]; then
-    echo "grb: ${yellow}NOOP${rs} rebase resulted in original HEAD"
-    return 0
-  else
-    echo "grb: ${green}Rebased${rs}!"
-  fi
-
-  echo "grb: pushing with 'git push --force origin $branch'..."
-  if git push --force origin "$branch"; then
-    echo "grb: ${green}OK${rs} done!"
-    return 0
-  else
-    echo "grb: ${red}ERROR${rs} failed!"
-    return 1
-  fi
-}
