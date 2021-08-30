@@ -98,10 +98,16 @@ export EDITOR=vim
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 if [ -f ~/.sh_aliases ]; then
-    . ~/.sh_aliases
+	. ~/.sh_aliases
 fi
 
-. .sh_git_cmd
+
+if [ -f ~/.sh_aliases ]; then
+	if alias gpu >/dev/null; then
+		unalias gpu
+	fi
+	. ~/.sh_git_cmd
+fi
 
 # Oh-my-zsh plugins, which should be overridable locally
 # Which plugins would you like to load?
@@ -109,15 +115,10 @@ fi
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git virtualenv pyenv ripgrep vi-mode)
+plugins=(git virtualenv pyenv ripgrep vi-mode nvm node npm)
 
 if [ -e ~/.zshrc.local ]; then
-  . ~/.zshrc.local
+	. ~/.zshrc.local
 fi
 
 source $ZSH/oh-my-zsh.sh
-
-if [[ -x "$(which pyenv)" ]]; then
-  eval "$(pyenv init -)"
-fi
-
