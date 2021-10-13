@@ -1,0 +1,5 @@
+setg ConsoleLogging true  
+setg LogLevel 5  
+setg SessionLogging true  
+setg TimestampOutput true
+setg PROMPT msf [%T W:%W S:%S J:%J]
