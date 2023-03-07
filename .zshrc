@@ -74,8 +74,10 @@ ZSH_CUSTOM=~/src/stash/dotfiles/.oh-my-zsh/custom
 
 # Turn off shared history across terminals on this machine
 unsetopt SHARE_HISTORY
-# Don't incrementally append to histfile
-unsetopt INC_APPEND_HISTORY
+setopt nosharehistory
+# Don't incrementally append to histfile:
+# Note: should be fine if not sharing history
+#unsetopt INC_APPEND_HISTORY
 
 # User configuration
 
@@ -130,3 +132,10 @@ fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+if which pyenv >/dev/null 2>&1; then
+	eval "$(pyenv init --path)"
+	eval "$(pyenv virtualenv-init -)"
+fi
+
+
