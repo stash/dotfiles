@@ -30,7 +30,6 @@ alias guppy='gup && gpu' # gpu defined in .bash_git_cmd
 alias sup='git stash && gup && git stash pop'
 alias suppy='git stash && gup && gpu && git stash pop'
 
-
 alias myps='eval "ps -fH -u $USER"'
 alias tmux='tmux -2 -u' # 256-color and utf8
 

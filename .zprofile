@@ -1,5 +1,7 @@
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
+export PATH="/Applications/MacVim.app/Contents/bin:$PATH"
+
 if [[ -d ~/.pyenv && -z "$NO_PYENV" ]]; then
 	export PYENV_ROOT="$HOME/.pyenv"
 	export PATH="$PYENV_ROOT/bin:$PATH"

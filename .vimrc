@@ -11,7 +11,7 @@ set background=dark
 colorscheme stash
 if has('gui_running')
 	colorscheme evening
-	set guifont=Inconsolata-Regular:h14
+	set guifont=MonaspiceNeNFM-Light:h13
 	imap <C-BS> <C-W>
 endif
 
