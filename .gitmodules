@@ -13,9 +13,6 @@
 [submodule ".vim/bundle/yaml-vim"]
 	path = .vim/bundle/yaml-vim
 	url = git@github.com:mrk21/yaml-vim.git
-[submodule ".vim/pack/vim-gitgutter"]
-	path = .vim/pack/vim-gitgutter
-	url = https://github.com/airblade/vim-gitgutter.git
 [submodule ".vim/pack/editorconfig-vim"]
 	path = .vim/pack/editorconfig-vim
 	url = https://github.com/editorconfig/editorconfig-vim.git
