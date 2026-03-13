@@ -24,3 +24,5 @@ Thumbs.db
 node_modules/
 
 .zshenv
+
+.tmp.drive*/
